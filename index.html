@@ -139,42 +139,46 @@
         });
     });
 		
-	// Vytvoření popup obsahu s obrázkovou galerií a textem
 	function createImageGalleryWithText(images, title, description) {
-		
-		// Uchování indexu aktuárlně zobrazeného obrázku
-		let currentIndex = 0;																											
-		
-		// Prvek obsahující celou galerii
-		const popupContent = document.createElement('div');																				
-		popupContent.innerHTML = `
-			<p style="font-weight: bold; text-align: center;">${title}</p>
-			<div id="gallery-container" style="display: flex; align-items: center; justify-content: center;">
-				<button id="prevBtn" style="font-size: 20px; background: none; border: none; cursor: pointer;">&#x25C0;</button>		 
-				<img id="galleryImage" src="${images[currentIndex]}" style="max-width: 200px; max-height: 150px; margin: 0 10px;">		
-				<button id="nextBtn" style="font-size: 20px; background: none; border: none; cursor: pointer;">&#x25B6;</button>
-			</div>
-			<p style="text-align: justify;">${description}</p>
-		`;
-		
-		// Funkce pro aktualizaci obrázku
-		function updateImage() {																										
-			document.getElementById('galleryImage').src = images[currentIndex];
-		}
-		
-		// Akce pro předchozí a následující tlačítko 
-		popupContent.querySelector('#prevBtn').onclick = () => {
-			currentIndex = (currentIndex - 1 + images.length) % images.length;
-			updateImage();
-		};
-
-		popupContent.querySelector('#nextBtn').onclick = () => {
-			currentIndex = (currentIndex + 1) % images.length;
-			updateImage();
-		};
-
-		return popupContent;
+	    // Uchování indexu aktuálně zobrazeného obrázku
+	    let currentIndex = 0;
+	
+	    // Prvek obsahující celou galerii
+	    const popupContent = document.createElement('div');
+	    popupContent.innerHTML = `
+	        <p style="font-weight: bold; text-align: center;">${title}</p>
+	        <div id="gallery-container" style="display: flex; align-items: center; justify-content: center;">
+	            <button id="prevBtn" style="font-size: 20px; background: none; border: none; cursor: pointer;">&#x25C0;</button>		 
+	            <img id="galleryImage" 
+	                src="${images[currentIndex]}" 
+	                loading="lazy" 
+	                style="max-width: 200px; max-height: 150px; margin: 0 10px;">		
+	            <button id="nextBtn" style="font-size: 20px; background: none; border: none; cursor: pointer;">&#x25B6;</button>
+	        </div>
+	        <p style="text-align: justify;">${description}</p>
+	    `;
+	
+	    // Funkce pro aktualizaci obrázku
+	    function updateImage() {
+	        const galleryImage = document.getElementById('galleryImage');
+	        galleryImage.src = images[currentIndex];
+	        galleryImage.loading = 'lazy'; // Zajištění, že lazy loading zůstává
+	    }
+	
+	    // Akce pro předchozí a následující tlačítko 
+	    popupContent.querySelector('#prevBtn').onclick = () => {
+	        currentIndex = (currentIndex - 1 + images.length) % images.length;
+	        updateImage();
+	    };
+	
+	    popupContent.querySelector('#nextBtn').onclick = () => {
+	        currentIndex = (currentIndex + 1) % images.length;
+	        updateImage();
+	    };
+	
+	    return popupContent;
 	}
+
 
 	// Vytvoření vlastní ikony
 	const awesomeIcon = L.AwesomeMarkers.icon({
